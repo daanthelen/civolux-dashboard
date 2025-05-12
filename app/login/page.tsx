@@ -24,19 +24,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <Card>
+    <div className='flex min-h-screen items-center justify-center bg-gray-50 p-4'>
+      <Card className='w-full max-w-md'>
         <CardHeader>
-          <CardTitle>Log in</CardTitle>
+          <CardTitle className='text-center'>Log in</CardTitle>
         </CardHeader>
         <CardContent>
           {error && (
-            <Alert variant='destructive'>
+            <Alert variant='destructive' className='mb-4'>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-          <form onSubmit={handleSubmit}>
-            <div>
+          <form onSubmit={handleSubmit} className='space-y-4'>
+            <div className='space-y-2'>
               <Label htmlFor='username'>Gebruikersnaam</Label>
               <Input
                 id='username'
@@ -47,7 +47,7 @@ export default function LoginPage() {
                 required
               />
             </div>
-            <div>
+            <div className='space-y-2'>
               <Label htmlFor='password'>Wachtwoord</Label>
               <Input
                 id='password'
@@ -58,7 +58,7 @@ export default function LoginPage() {
                 required
               />
             </div>
-            <Button type='submit' disabled={isLoading}>
+            <Button type='submit' className='w-full' disabled={isLoading}>
               {isLoading ? 'Inloggen...' : 'Log in'}
             </Button>
           </form>
