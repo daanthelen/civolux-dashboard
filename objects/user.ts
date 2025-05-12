@@ -14,3 +14,5 @@ export interface User {
 }
 
 export type UserFormData = Omit<User, 'id' | 'createdAt' | 'updatedAt'>
+
+export type UserListItem = Omit<User, 'password'>
