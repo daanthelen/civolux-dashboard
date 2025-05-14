@@ -47,7 +47,7 @@ export default function UserForm({ userId, initialData }: UserFormProps) {
         setLoading(true);
         const response = await fetch(`/api/users/${userId}`);
         if (!response.ok) {
-          throw new Error('Ffailed to fetch user');
+          throw new Error('Failed to fetch user');
         }
 
         const userData = await response.json();
@@ -77,9 +77,14 @@ export default function UserForm({ userId, initialData }: UserFormProps) {
       | React.ChangeEvent<HTMLInputElement>
       | { name: string; value: string | boolean }
   ) => {
-    const { name, value } =
-      e instanceof Event ? (e.target as HTMLInputElement) : e;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if ('target' in e) {
+      const { name, value } = e.target;
+      setFormData(prev => ({ ...prev, [name]: value }));
+    } else {
+      // It's our custom object with name and value
+      const { name, value } = e;
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -128,7 +133,7 @@ export default function UserForm({ userId, initialData }: UserFormProps) {
 
       setTimeout(() => {
         router.push('/users');
-      }, 1500);
+      }, 3000);
     } catch (err) {
       console.error('Error saving user:', err);
       setError((err as Error).message || 'Kon de gebruiker niet opslaan');
