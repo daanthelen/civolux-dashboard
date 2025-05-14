@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 
 export async function GET() {
   try {
-    const users = db.getUsers();
+    const users = await db.getUsers();
     return NextResponse.json(users);
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       userData.active = true;
     }
 
-    const newUser = db.createUser(userData);
+    const newUser = await db.createUser(userData);
 
     return NextResponse.json(newUser, { status: 201 });
   } catch (error) {

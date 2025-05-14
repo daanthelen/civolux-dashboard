@@ -17,19 +17,19 @@ let users: User[] = [
 ];
 
 export const db = {
-  getUsers: (): User[] => {
+  getUsers: async (): Promise<User[]> => {
     return users;
   },
 
-  getUserById: (id: string): User | undefined => {
+  getUserById: async (id: string): Promise<User | undefined> => {
     const user = users.find(user => user.id === id);
     return user ? user : undefined;
   },
 
-  getUserByCredentials: (
+  getUserByCredentials: async (
     username: string,
     password: string
-  ): User | undefined => {
+  ): Promise<User | undefined> => {
     const user = users.find(
       user =>
         user.username === username && user.password === password && user.active
@@ -37,9 +37,9 @@ export const db = {
     return user ? user : undefined;
   },
 
-  createUser: (
+  createUser: async (
     userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>
-  ): User => {
+  ): Promise<User> => {
     const newUser: User = {
       id: uuidv4(),
       ...userData,
@@ -51,10 +51,10 @@ export const db = {
     return newUser;
   },
 
-  updateUser: (
+  updateUser: async (
     id: string,
     userData: Partial<Omit<User, 'id' | 'createdAt' | 'updatedAt'>>
-  ): User | undefined => {
+  ): Promise<User | undefined> => {
     const index = users.findIndex(user => user.id === id);
     if (index === -1) return undefined;
 
@@ -67,7 +67,7 @@ export const db = {
     return users[index];
   },
 
-  deleteUser: (id: string): boolean => {
+  deleteUser: async (id: string): Promise<boolean> => {
     const initialLength = users.length;
     users = users.filter(user => user.id !== id);
     return users.length !== initialLength;
