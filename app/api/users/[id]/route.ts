@@ -1,9 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const user = await db.getUserById(params.id);
+    const { id } = await params;
+
+    const user = await db.getUserById(id);
 
     if (!user) {
       return NextResponse.json({ error: 'Gebruiker niet gevonden' }, { status: 404 });
@@ -16,10 +18,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const userData = await request.json();
-    const updatedUser = await db.updateUser(params.id, userData);
+    const updatedUser = await db.updateUser(id, userData);
 
     if (!updatedUser) {
       return NextResponse.json({ error: 'Gebruiker niet gevonden' }, { status: 404 });
@@ -32,9 +35,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const success = await db.deleteUser(params.id);
+    const { id } = await params;
+    const success = await db.deleteUser(id);
 
     if (!success) {
       return NextResponse.json({ error: 'Gebruiker niet gevonden' }, { status: 404 });
