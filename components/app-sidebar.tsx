@@ -54,7 +54,7 @@ export function AppSidebar() {
             <SidebarMenu className="flex flex-col gap-y-4">
               {menuItems.map(item => (
                 <SidebarMenuItem key={item.title} className="group flex items-center gap-x-3 rounded-md text-sm font-semibold">
-                  <SidebarMenuButton asChild isActive={pathname.slice(1).toLowerCase() === item.title.toLowerCase()}
+                  <SidebarMenuButton asChild isActive={pathname === item.url}
                     className="w-full h-full p-3 hover:bg-indigo-700 hover:text-white">
                     <Link href={item.url}>
                       <item.icon />

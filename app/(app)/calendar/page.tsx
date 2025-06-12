@@ -1,0 +1,29 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import MapContainer from '@/components/map-container';
+
+export default function CalendarPage() {
+  return (
+    <div>
+      <Card className='lg:col-span-2 h-fit bg-white rounded-lg shadow overflow-auto'>
+        <CardHeader>
+          <CardTitle className='text-indigo-700 font-bold text-2xl'>Sloopkalender</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className='flex flex-wrap gap-4 mb-6'>
+
+          </div>
+          
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+            <div>
+              Table
+              Calendar
+            </div>
+            <div>
+              <MapContainer />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

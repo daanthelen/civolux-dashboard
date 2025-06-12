@@ -98,56 +98,54 @@ const barChartData = {
 
 export default function DashboardPage() {
   return (
-    <div className='max-w-screen-xl mx-auto'>
-      <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-        <Card className='lg:col-span-2 h-fit bg-white rounded-lg shadow overflow-auto'>
-          <CardHeader>
-            <CardTitle className='text-indigo-700 font-bold text-lg'>Overzicht Materialen</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table className='min-w-full table-auto border-collapse border border-gray-200'>
-              <TableHeader className='bg-indigo-100'>
-                <TableRow>
-                  <TableHead className='border border-gray-300 px-4 py-2 font-bold text-left text-indigo-700'>Materiaal</TableHead>
-                  <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Hoeveelheid (m³)</TableHead>
-                  <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Locatie</TableHead>
-                  <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Geschatte Huizen</TableHead>
+    <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+      <Card className='lg:col-span-2 h-fit bg-white rounded-lg shadow overflow-auto'>
+        <CardHeader>
+          <CardTitle className='text-indigo-700 font-bold text-lg'>Overzicht Materialen</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table className='min-w-full table-auto border-collapse border border-gray-200'>
+            <TableHeader className='bg-indigo-100'>
+              <TableRow>
+                <TableHead className='border border-gray-300 px-4 py-2 font-bold text-left text-indigo-700'>Materiaal</TableHead>
+                <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Hoeveelheid (m³)</TableHead>
+                <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Locatie</TableHead>
+                <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Geschatte Huizen</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {tableData.map(data => (
+                <TableRow key={data.id} className='hover:bg-indigo-50 even:bg-indigo-50'>
+                  <TableCell className='border border-gray-300 px-4 py-2'>{data.material}</TableCell>
+                  <TableCell className='border border-gray-300 px-4 py-2 text-right'>{data.quantity}</TableCell>
+                  <TableCell className='border border-gray-300 px-4 py-2 text-right'>{data.location}</TableCell>
+                  <TableCell className='border border-gray-300 px-4 py-2 text-right font-semibold'>{data.estimatedHouses}</TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {tableData.map(data => (
-                  <TableRow key={data.id} className='hover:bg-indigo-50 even:bg-indigo-50'>
-                    <TableCell className='border border-gray-300 px-4 py-2'>{data.material}</TableCell>
-                    <TableCell className='border border-gray-300 px-4 py-2 text-right'>{data.quantity}</TableCell>
-                    <TableCell className='border border-gray-300 px-4 py-2 text-right'>{data.location}</TableCell>
-                    <TableCell className='border border-gray-300 px-4 py-2 text-right font-semibold'>{data.estimatedHouses}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-        
-        <Card className='bg-white rounded-lg shadow'>
-          <CardHeader>
-            <CardTitle className='text-indigo-700 font-bold text-lg'>Visuele Overzichten</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='mb-10'>
-              <h3 className='font-semibold text-indigo-600 mb-4'>Materiaalverdeling (m³)</h3>
-              <div className='h-[400px]'>
-                <PieChart data={pieChartData} />
-              </div>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+      
+      <Card className='bg-white rounded-lg shadow'>
+        <CardHeader>
+          <CardTitle className='text-indigo-700 font-bold text-lg'>Visuele Overzichten</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className='mb-10'>
+            <h3 className='font-semibold text-indigo-600 mb-4'>Materiaalverdeling (m³)</h3>
+            <div className='h-[400px]'>
+              <PieChart data={pieChartData} />
             </div>
-            <div>
-              <h3 className="font-semibold text-indigo-600 mb-4">Huizen Bouwvoorspelling per Materiaal</h3>
-              <div className='h-[400px]'>
-                <BarChart data={barChartData.data} options={barChartData.options} />
-              </div>
+          </div>
+          <div>
+            <h3 className="font-semibold text-indigo-600 mb-4">Huizen Bouwvoorspelling per Materiaal</h3>
+            <div className='h-[400px]'>
+              <BarChart data={barChartData.data} options={barChartData.options} />
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
