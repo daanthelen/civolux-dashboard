@@ -9,6 +9,8 @@ import {
 } from '@/components/ui/table';
 import PieChart from '@/components/pie-chart';
 import BarChart from '@/components/bar-chart';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
 const tableData = [
   {
@@ -96,7 +98,14 @@ const barChartData = {
   }
 }
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data?.user) {
+    redirect('/login');
+  }
+
   return (
     <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
       <Card className='lg:col-span-2 h-fit bg-white rounded-lg shadow overflow-auto'>
