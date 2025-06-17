@@ -142,14 +142,14 @@ export default async function DashboardPage() {
         </CardHeader>
         <CardContent>
           <div className='mb-10'>
-            <h3 className='font-semibold text-indigo-600 mb-4'>Materiaalverdeling (m³)</h3>
-            <div className='h-[400px]'>
+            <h3 className='font-semibold text-indigo-600 mb-3'>Materiaalverdeling (m³)</h3>
+            <div className='h-[300px]'>
               <PieChart data={pieChartData} />
             </div>
           </div>
           <div>
-            <h3 className="font-semibold text-indigo-600 mb-4">Huizen Bouwvoorspelling per Materiaal</h3>
-            <div className='h-[400px]'>
+            <h3 className="font-semibold text-indigo-600 mb-3">Huizen Bouwvoorspelling per Materiaal</h3>
+            <div className='h-[250px]'>
               <BarChart data={barChartData.data} options={barChartData.options} />
             </div>
           </div>

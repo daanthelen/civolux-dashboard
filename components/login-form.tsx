@@ -7,24 +7,31 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Loader2Icon } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { login } from '@/app/api/users/auth/actions';
+import { signInWithEmail } from '@/utils/auth/client-auth';
+import { useRouter } from 'next/navigation';
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const error = await login(email, password);
+      const { data, error } = await signInWithEmail(email, password);
 
-      setError(error ? error : '');
+      if (error) {
+        setError(error.message);
+      } else if (data.user) {
+        router.push('/dashboard');
+        router.refresh();
+      }
     }
-    catch {
+    catch (err) {
       setError('Something went wrong, please try again later.');
     }
     finally {
