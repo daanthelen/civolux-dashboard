@@ -5,11 +5,12 @@ import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import Link from 'next/link';
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -24,46 +25,51 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-gray-50 p-4'>
-      <Card className='w-full max-w-md'>
-        <CardHeader>
-          <CardTitle className='text-center'>Log in</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {error && (
-            <Alert variant='destructive' className='mb-4'>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          <form onSubmit={handleSubmit} className='space-y-4'>
-            <div className='space-y-2'>
-              <Label htmlFor='username'>Gebruikersnaam</Label>
-              <Input
-                id='username'
-                type='text'
-                placeholder='Vul je gebruikersnaam in'
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                required
-              />
-            </div>
-            <div className='space-y-2'>
-              <Label htmlFor='password'>Wachtwoord</Label>
-              <Input
-                id='password'
-                type='password'
-                placeholder='Vul je wachtwoord in'
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <Button type='submit' className='w-full' disabled={isLoading}>
-              {isLoading ? 'Inloggen...' : 'Log in'}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+    <Card className='bg-white shadow-lg rounded-lg px-2 py-8 w-full max-w-md'>
+      <CardHeader>
+        <CardTitle className='text-2xl font-bold text-[#41228E] text-center'>Log in</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {error && (
+          <Alert variant='destructive' className='mb-4'>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        <form onSubmit={handleSubmit} className='space-y-4'>
+          <div className='space-y-2'>
+            <Label htmlFor='email' className='block text-gray-700 font-semibold mb-1'>Email</Label>
+            <Input
+              id='email'
+              type='email'
+              placeholder='email@example.com'
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+              className='w-full px-4 py-2 border rounded'
+            />
+          </div>
+          <div className='space-y-2'>
+            <Label htmlFor='password' className='block text-gray-700 font-semibold mb-1'>Password</Label>
+            <Input
+              id='password'
+              type='password'
+              placeholder='••••••••'
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+              className='w-full px-4 py-2 border rounded'
+            />
+          </div>
+          <Button type='submit' className='bg-[#41228E] w-full px-4 py-2 rounded font-semibold hover:bg-[#341b72] cursor-pointer' disabled={isLoading}>
+            {isLoading ? 'Inloggen...' : 'Log in'}
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className='justify-center'>
+        <p className="text-sm text-gray-600">
+          Don’t have an account? <span><Link href='/signup' className='text-[#41228E] underline'>Sign up</Link></span>
+        </p>
+      </CardFooter>
+    </Card>
   );
 }
