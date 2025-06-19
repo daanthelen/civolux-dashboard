@@ -13,7 +13,7 @@ export async function GET() {
     }
 
     const result = await response.json();
-    return NextResponse.json({ ...result });
+    return NextResponse.json(result);
   }
   catch (error) {
     console.error(error);
