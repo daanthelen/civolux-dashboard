@@ -15,6 +15,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Separator } from "./ui/separator"
 import { House, Calendar, LayoutDashboard, Settings, UserRound } from "lucide-react"
+import { SignOutButton } from "./sign-out-button";
 
 const menuItems = [
   {
@@ -68,16 +69,17 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="bg-[#41228E] px-[32] py-4">
-        <SidebarMenu className="flex flex-col gap-y-4">
-          <SidebarMenuItem key='profile' className="group flex items-center gap-x-3 rounded-md text-sm font-semibold">
-            <SidebarMenuButton asChild className="w-full h-full p-3 hover:bg-indigo-700 hover:text-white">
-              <Link href='/profile'>
-                <UserRound />
-                <span>Profiel</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        {/* <SidebarMenuItem key='profile' className="group flex items-center gap-x-3 rounded-md text-sm font-semibold"> */}
+        <SidebarMenuItem key='footer' className="group flex items-center rounded-md text-sm font-semibold">
+          <SidebarMenuButton asChild className="w-full h-full p-3 justify-start flex-1 hover:bg-indigo-700 hover:text-white">
+            <Link href='/profile'>
+              <UserRound />
+              <span>Profiel</span>
+            </Link>
+          </SidebarMenuButton>
+          <Separator orientation="vertical" className="bg-white/50 mx-2" />
+          <SignOutButton />
+        </SidebarMenuItem>
       </SidebarFooter>
     </Sidebar>
   )
