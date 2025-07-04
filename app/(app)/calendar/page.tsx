@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import MapContainer from '@/components/map-container';
+// import MapContainer from '@/components/map-container';
+import MapComponent from "@/components/map";
 
 export default function CalendarPage() {
   return (
@@ -18,8 +19,8 @@ export default function CalendarPage() {
               Table
               Calendar
             </div>
-            <div>
-              <MapContainer />
+            <div className='h-[500px] w-[500px]'>
+              <MapComponent />
             </div>
           </div>
         </CardContent>
