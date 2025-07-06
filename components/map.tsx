@@ -2,34 +2,24 @@
 
 import { createRoot } from 'react-dom/client';
 import { useEffect, useRef, useState } from 'react';
-import { Map, Marker, Popup } from 'maplibre-gl';
+import { Map, Marker } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { BsHouseFill } from "react-icons/bs";
+import { MapProps, MapMarker } from '@/types/map';
+import MarkerComponent from './map-marker';
 
-export interface MapMarker {
-  id: string;
-  longitude: number;
-  latitude: number;
-  title?: string;
-  color?: string;
-}
-
-export interface MapProps {
-  longitude?: number;
-  latitude?: number;
-  zoom?: number;
-  markers?: MapMarker[];
-}
-
-export default function MapComponent({ longitude, latitude, zoom, markers = [] }: MapProps) {
+export default function MapComponent({ location, zoom, markers = [], onMarkerClick }: MapProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<maplibregl.Map | null>(null)
   const markersRef = useRef<Marker[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentLongitude, setCurrentLongitude] = useState<number | null>(null);
   const [currentLatitude, setCurrentLatitude] = useState<number | null>(null);
   const [currentZoom, setCurrentZoom] = useState<number | null>(null);
   const [mapInitialized, setMapInitialized] = useState(false)
+
+  const defaultLongitude = 5.9804;
+  const defaultLatitude = 50.8860;
+  const defaultZoom = 13;
+
 
   // Haal gebruiker locatie op
   useEffect(() => {
@@ -38,14 +28,14 @@ export default function MapComponent({ longitude, latitude, zoom, markers = [] }
         (position) => {
           setCurrentLongitude(position.coords.longitude);
           setCurrentLatitude(position.coords.latitude);
-          setCurrentZoom(13);
+          setCurrentZoom(defaultZoom);
         },
         (error) => {
           console.warn("Geolocation error:", error)
 
-          setCurrentLongitude(5.83);
-          setCurrentLatitude(51.18);
-          setCurrentZoom(13);
+          setCurrentLongitude(defaultLongitude);
+          setCurrentLatitude(defaultLatitude);
+          setCurrentZoom(defaultZoom);
         },
         {
           enableHighAccuracy: true,
@@ -55,9 +45,9 @@ export default function MapComponent({ longitude, latitude, zoom, markers = [] }
       )
     }
     else {
-      setCurrentLongitude(5.83);
-      setCurrentLatitude(51.18);
-      setCurrentZoom(13);
+      setCurrentLongitude(defaultLongitude);
+      setCurrentLatitude(defaultLatitude);
+      setCurrentZoom(defaultZoom);
     }
   }, []);
 
@@ -67,17 +57,16 @@ export default function MapComponent({ longitude, latitude, zoom, markers = [] }
 
     const reactRoot = createRoot(markerElement);
     reactRoot.render(
-      <div className='flex flex-col items-center drop-shadow-xl/25 transition-all duration-200 ease hover:translate-y-[-2px] hover:drop-shadow-xl/30'>
-        <div className='flex justify-center items-center w-[40px] h-[40px] rounded-full'
-          style={{ backgroundColor: marker.color || '#329dd7' }}
-        >
-          <BsHouseFill size={22} fill='white' className='mb-[2px]' />
-        </div>
-        <div className='h-[0px] w-[0px] mt-[-6px] border-l-14 border-l-transparent border-r-14 border-r-transparent border-t-18'
-          style={{ borderTopColor: marker.color || '#329dd7' }}
-        />
-      </div>
+      <MarkerComponent marker={marker} onMarkerClick={onMarkerClick} />
     );
+
+    markerElement.addEventListener('mouseenter', () => {
+      markerElement.style.zIndex = '1';
+    });
+
+    markerElement.addEventListener('mouseleave', () => {
+      markerElement.style.zIndex = '';
+    });
 
     return markerElement;
   }
@@ -91,8 +80,8 @@ export default function MapComponent({ longitude, latitude, zoom, markers = [] }
   useEffect(() => {
     if (!mapContainer.current || !currentLongitude || !currentLatitude || mapInitialized) return
 
-    const lng = longitude || currentLongitude;
-    const lat = latitude || currentLatitude;
+    const lng = location?.longitude || currentLongitude;
+    const lat = location?.latitude || currentLatitude;
     const z = zoom || currentZoom;
 
     const initializeMap = async () => {
@@ -109,21 +98,15 @@ export default function MapComponent({ longitude, latitude, zoom, markers = [] }
           container: mapContainer.current!,
           style: mapStyle,
           center: [lng, lat],
-          zoom: z || 13,
+          zoom: z || defaultZoom,
         })
 
         map.current.on("load", () => {
-          setIsLoading(false)
           setMapInitialized(true)
-        })
-
-        map.current.on("error", () => {
-          setIsLoading(false)
         })
       }
       catch (error) {
         console.error(error);
-        setIsLoading(false);
       }
     }
 
@@ -141,15 +124,15 @@ export default function MapComponent({ longitude, latitude, zoom, markers = [] }
 
   // Verander locatie
   useEffect(() => {
-    if (!map.current || !longitude || !latitude || !mapInitialized) return
+    if (!map.current || !location || !mapInitialized) return
 
     map.current.flyTo({
-      center: [longitude, latitude],
-      zoom: zoom || map.current.getZoom(),
+      center: [location.longitude, location.latitude],
+      zoom: map.current.getZoom(),
       duration: 2000,
       essential: true,
     })
-  }, [longitude, latitude, zoom, mapInitialized])
+  }, [location, zoom, mapInitialized])
 
   useEffect(() => {
     const addMarkersToMap = () => {
@@ -164,12 +147,6 @@ export default function MapComponent({ longitude, latitude, zoom, markers = [] }
           .setLngLat([markerData.longitude, markerData.latitude])
           .addTo(map.current!);
 
-        if (markerData.title) {
-          const popup = new Popup({ offset: 25 })
-            .setHTML(`<h3 class="font-bold">${markerData.title}</h3>`);
-            marker.setPopup(popup);
-        }
-
         markersRef.current.push(marker);
       });
     }
@@ -177,6 +154,7 @@ export default function MapComponent({ longitude, latitude, zoom, markers = [] }
     if (mapInitialized) {
       addMarkersToMap();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markers, mapInitialized]);
 
   return (

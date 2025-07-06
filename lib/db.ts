@@ -1,4 +1,4 @@
-import type { User } from '@/objects/user';
+import type { User } from '@/types/user';
 import { v4 as uuidv4 } from 'uuid';
 
 let users: User[] = [

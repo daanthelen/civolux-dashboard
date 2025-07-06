@@ -1,19 +1,11 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import MapComponent, { MapMarker } from "@/components/map";
+import MapComponent from "@/components/map";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
-interface TwinBuilding {
-  id: string;
-  longitude: number;
-  latitude: number;
-  build_year: number;
-  area: number;
-  building_type: string;
-}
+import { TwinBuilding, Location, MapMarker } from "@/types/map";
 
 export default function TwinBuildingPage() {
   const [street, setStreet] = useState<string>('');
@@ -23,6 +15,7 @@ export default function TwinBuildingPage() {
   const [twinBuildings, setTwinBuildings] = useState<TwinBuilding[]>([])
   const [markers, setMarkers] = useState<MapMarker[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentLocation, setCurrentLocation] = useState<Location | undefined>(undefined);
 
   const findTwinBuildings = async () => {
     if (isLoading) return;
@@ -66,6 +59,9 @@ export default function TwinBuildingPage() {
       longitude: referenceBuilding.longitude,
       latitude: referenceBuilding.latitude,
       color: '#ca3728',
+      address: referenceBuilding.address,
+      buildYear: referenceBuilding.build_year,
+      area: referenceBuilding.area,
     }
 
     newMarkers.push(marker);
@@ -76,13 +72,27 @@ export default function TwinBuildingPage() {
         longitude: twinBuilding.longitude,
         latitude: twinBuilding.latitude,
         color: '#329dd7',
+        address: twinBuilding.address,
+        buildYear: twinBuilding.build_year,
+        area: twinBuilding.area,
       }
 
       newMarkers.push(marker);
     });
 
     setMarkers(newMarkers);
+    setCurrentLocation({
+      longitude: referenceBuilding.longitude,
+      latitude: referenceBuilding.latitude,
+    });
   }, [referenceBuilding, twinBuildings]);
+
+  const handleMarkerClick = (marker: MapMarker) => {
+    setCurrentLocation({
+      longitude: marker.longitude,
+      latitude: marker.latitude,
+    });
+  }
 
   return (
     <div>
@@ -99,9 +109,9 @@ export default function TwinBuildingPage() {
 
       <div className="h-[600px] w-[1000px]">
         <MapComponent
-          longitude={referenceBuilding?.longitude}
-          latitude={referenceBuilding?.latitude}
+          location={currentLocation}
           markers={markers}
+          onMarkerClick={handleMarkerClick}
         />
       </div>
     </div>

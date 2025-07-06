@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import type { UserFormData, Role } from '@/objects/user';
+import type { UserFormData, Role } from '@/types/user';
 
 interface UserFormProps {
   userId?: string;
