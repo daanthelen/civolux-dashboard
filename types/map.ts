@@ -8,6 +8,12 @@ export interface Building {
   building_type: string;
 }
 
+export interface Address {
+  street: string;
+  house_number: number;
+  house_number_addition?: string;
+}
+
 export interface Cluster {
   id: number;
   buildings: Building[];

@@ -14,14 +14,14 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Separator } from "./ui/separator"
-import { House, Calendar, LayoutDashboard, Settings, UserRound } from "lucide-react"
+import { Calendar, LayoutDashboard, Settings, UserRound, SquareStack, Group } from "lucide-react"
 import { SignOutButton } from "./sign-out-button";
 
 const menuItems = [
   {
-    title: 'Home',
-    url: '/',
-    icon: House,
+    title: 'Dashboard',
+    url: '/dashboard',
+    icon: LayoutDashboard,
   },
   {
     title: 'Sloopkalender',
@@ -29,9 +29,14 @@ const menuItems = [
     icon: Calendar,
   },
   {
-    title: 'Dashboard',
-    url: '/dashboard',
-    icon: LayoutDashboard,
+    title: 'Twin Buildings',
+    url: '/twin-buildings',
+    icon: SquareStack,
+  },
+  {
+    title: 'Clusters',
+    url: '/clusters',
+    icon: Group,
   },
   {
     title: 'Instellingen',
@@ -44,7 +49,7 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar collapsible="icon" className="flex flex-col w-64 text-indigo-200 overflow-y-auto">
+    <Sidebar collapsible="none" className="flex flex-col w-64 text-indigo-200 h-screen">
       <SidebarContent className="bg-[#41228E]">
         <SidebarGroup>
           <SidebarGroupLabel className="flex h-16 shrink-0 items-center px-6 border-b border-indigo-500">
@@ -69,7 +74,6 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="bg-[#41228E] px-[32] py-4">
-        {/* <SidebarMenuItem key='profile' className="group flex items-center gap-x-3 rounded-md text-sm font-semibold"> */}
         <SidebarMenuItem key='footer' className="group flex items-center rounded-md text-sm font-semibold">
           <SidebarMenuButton asChild className="w-full h-full p-3 justify-start flex-1 hover:bg-indigo-700 hover:text-white">
             <Link href='/profile'>

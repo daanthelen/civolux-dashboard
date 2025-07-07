@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from "react";
 import MapComponent from "@/components/map";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Building, Location, MapMarker } from "@/types/map";
+import { Building, Location, MapMarker, Address } from "@/types/map";
 import { escapeCsvValue } from "@/utils/csvUtils";
+import { AddressInput } from "@/components/address-input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Download } from "lucide-react";
+import { TwinBuildingList } from "@/components/twin-building-list";
 
 export default function TwinBuildingPage() {
-  const [street, setStreet] = useState<string>('');
-  const [houseNumber, setHouseNumber] = useState<number | null>(null);
-  const [houseNumberAddition, setHouseNumberAddition] = useState<string>('');
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [referenceBuilding, setReferenceBuilding] = useState<Building | null>(null);
   const [twinBuildings, setTwinBuildings] = useState<Building[]>([])
   const [markers, setMarkers] = useState<MapMarker[]>([]);
@@ -19,7 +19,7 @@ export default function TwinBuildingPage() {
   const [currentLocation, setCurrentLocation] = useState<Location | undefined>(undefined);
 
   const findTwinBuildings = async () => {
-    if (isLoading) return;
+    if (isLoading || !selectedAddress) return;
 
     setIsLoading(true);
 
@@ -30,11 +30,12 @@ export default function TwinBuildingPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          street: street,
-          house_number: houseNumber,
-          house_number_addition: houseNumberAddition,
+          street: selectedAddress.street,
+          house_number: selectedAddress.house_number,
+          house_number_addition: selectedAddress.house_number_addition,
         }),
       });
+
       const buildings = await response.json();
       setTwinBuildings(buildings.twin_buildings);
       setReferenceBuilding(buildings.reference_building);
@@ -88,6 +89,10 @@ export default function TwinBuildingPage() {
     });
   }, [referenceBuilding, twinBuildings]);
 
+  useEffect(() => {
+    console.log(twinBuildings);
+  }, [twinBuildings]);
+
   const handleMarkerClick = (marker: MapMarker) => {
     setCurrentLocation({
       longitude: marker.longitude,
@@ -123,27 +128,48 @@ export default function TwinBuildingPage() {
   }
 
   return (
-    <div>
-      <Label htmlFor="street">Street:</Label>
-      <Input id="street" type='text' value={street} onChange={e => setStreet(e.target.value)} required />
+    <div className="flex h-full gap-4">
+      <div className="w-fit shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
+        <Card className="m-4">
+          <CardHeader>
+            <CardTitle className="text-lg">Address Search</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <AddressInput onSelect={setSelectedAddress} />
+            <Button onClick={findTwinBuildings} disabled={!selectedAddress} className="w-full cursor-pointer">Select Address</Button>
+          </CardContent>
+        </Card>
 
-      <Label htmlFor="houseNumber">House Number:</Label>
-      <Input id="houseNumber" type='number' value={String(houseNumber)} onChange={e => setHouseNumber(parseInt(e.target.value))} required />
-
-      <Label htmlFor="houseNumberAddition">House Number Addition:</Label>
-      <Input id="houseNumberAddition" type='text' value={houseNumberAddition} onChange={e => setHouseNumberAddition(e.target.value)} />
-
-      <Button type='submit' onClick={findTwinBuildings} className="border-2 border-black border-solid">Predict</Button>
-
-      <Button onClick={exportToCsv} className="border-2 border-black border-solid">Export</Button>
-
-      <div className="h-[600px] w-[1000px]">
-        <MapComponent
-          location={currentLocation}
-          markers={markers}
-          onMarkerClick={handleMarkerClick}
-        />
+        <Card className="m-4 flex-1 flex flex-col">
+          <CardHeader>
+            <CardTitle className="text-lg">Twin Buildings ({twinBuildings?.length || 0})</CardTitle>
+          </CardHeader>
+          <CardContent className="flex-1 flex flex-col">
+            <div className="flex-1">
+              <TwinBuildingList twinBuildings={twinBuildings} />
+            </div>
+            <Button
+              onClick={exportToCsv}
+              disabled={twinBuildings?.length === 0}
+              className="w-full mt-4 bg-transparent cursor-pointer"
+              variant="outline"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export To CSV
+            </Button>
+          </CardContent>
+        </Card>
       </div>
+
+      <Card className="h-full w-6xl shrink-1">
+        <CardContent className="h-full">
+          <MapComponent
+            location={currentLocation}
+            markers={markers}
+            onMarkerClick={handleMarkerClick}
+          />
+        </CardContent>
+      </Card>
     </div>
   )
 }

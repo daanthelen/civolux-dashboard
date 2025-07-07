@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 
 interface ServiceStatus {
   status: 'healthy' | 'unhealthy' | 'pending';
-  dataset_loaded?: boolean;
+  datasets_loaded?: boolean;
   error?: string;
 }
 
@@ -62,7 +62,7 @@ export default function DataAnalysisPage() {
   return (
     <div>
       <p>Status: {serviceStatus.status}</p>
-      {serviceStatus.status == 'healthy' && <p>Dataset loaded: {String(serviceStatus.dataset_loaded)}</p>}
+      {serviceStatus.status == 'healthy' && <p>Dataset loaded: {String(serviceStatus.datasets_loaded)}</p>}
       {serviceStatus.error && <p>Error: {serviceStatus.error}</p>}
 
       <Label htmlFor="street">Street:</Label>
