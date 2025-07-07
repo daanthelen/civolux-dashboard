@@ -18,6 +18,7 @@ export interface Cluster {
   id: number;
   buildings: Building[];
   color?: string;
+  average_age?: number;
 }
 
 export interface Location {

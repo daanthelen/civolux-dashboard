@@ -132,17 +132,17 @@ export default function TwinBuildingPage() {
       <div className="w-fit shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
         <Card className="m-4">
           <CardHeader>
-            <CardTitle className="text-lg">Address Search</CardTitle>
+            <CardTitle className="text-lg">Adres Zoeken</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <AddressInput onSelect={setSelectedAddress} />
-            <Button onClick={findTwinBuildings} disabled={!selectedAddress} className="w-full cursor-pointer">Select Address</Button>
+            <Button onClick={findTwinBuildings} disabled={!selectedAddress} className="w-full cursor-pointer">Selecteer Adres</Button>
           </CardContent>
         </Card>
 
         <Card className="m-4 flex-1 flex flex-col">
           <CardHeader>
-            <CardTitle className="text-lg">Twin Buildings ({twinBuildings?.length || 0})</CardTitle>
+            <CardTitle className="text-lg">Gevonden Twin Buildings ({twinBuildings?.length || 0})</CardTitle>
           </CardHeader>
           <CardContent className="flex-1 flex flex-col">
             <div className="flex-1">
@@ -155,7 +155,7 @@ export default function TwinBuildingPage() {
               variant="outline"
             >
               <Download className="h-4 w-4 mr-2" />
-              Export To CSV
+              Export Naar CSV
             </Button>
           </CardContent>
         </Card>

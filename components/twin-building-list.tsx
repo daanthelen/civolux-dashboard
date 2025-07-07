@@ -2,7 +2,7 @@
 
 import { Building } from "@/types/map";
 import { ScrollArea } from "./ui/scroll-area";
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card";
 
 interface TwinBuildingListProps {
   twinBuildings: Building[];
@@ -13,7 +13,7 @@ export function TwinBuildingList({ twinBuildings }: TwinBuildingListProps) {
     <ScrollArea className="h-full w-full border rounded-md">
       <div className="space-y-1">
         {!twinBuildings || twinBuildings.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-8">No Twin Buildings found</p>
+          <p className="text-sm text-muted-foreground text-center py-8">Geen Twin Buildings gevonden</p>
         ) : (
           twinBuildings?.map(twinBuilding => (
             <Card key={twinBuilding.id} className="p-0 border rounded-md">

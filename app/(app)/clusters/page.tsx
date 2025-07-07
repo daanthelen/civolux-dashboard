@@ -5,13 +5,15 @@ import MapComponent from "@/components/map";
 import { Cluster } from "@/types/map";
 import { Button } from "@/components/ui/button";
 import { ColorPaletteGenerator } from "@/utils/color";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ClusterListPage } from "@/components/cluster-list";
 
 export default function ClusterPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [clusters, setClusters] = useState<Cluster[]>([]);
   const colorPaletteGenerator = new ColorPaletteGenerator();
 
-  const displayClusters = async () => {
+  const getClusters = async () => {
     if (isLoading) return;
 
     setIsLoading(true);
@@ -27,6 +29,8 @@ export default function ClusterPage() {
         });
       }
 
+      clusterResponse.sort((a, b) => a.id - b.id);
+
       setClusters(clusterResponse);
     }
     catch (error) {
@@ -38,12 +42,32 @@ export default function ClusterPage() {
   }
 
   return (
-    <div>
-      <Button type='submit' onClick={displayClusters} className="border-2 border-black border-solid">Display Clusters</Button>
-
-      <div className="h-[600px] w-[1000px]">
-        <MapComponent clusters={clusters} />
+    <div className="flex h-full gap-4">
+      <div className="w-96 shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
+        <Button
+          onClick={getClusters}
+          disabled={isLoading}
+          className="w-auto m-4 cursor-pointer"
+        >
+            Toon Clusters
+        </Button>
+        <Card className="m-4 flex-1 flex flex-col">
+          <CardHeader>
+            <CardTitle className="text-lg">Clusters ({clusters?.length || 0})</CardTitle>
+          </CardHeader>
+          <CardContent className="flex-1 flex flex-col">
+            <div className="flex-1">
+              <ClusterListPage clusters={clusters} />
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
+      <Card className="h-full w-6xl shrink-1">
+        <CardContent className="h-full">
+          <MapComponent clusters={clusters} />
+        </CardContent>
+      </Card>
     </div>
   )
 }
