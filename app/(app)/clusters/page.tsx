@@ -4,7 +4,7 @@ import { useState } from "react";
 import MapComponent from "@/components/map";
 import { Cluster } from "@/types/map";
 import { Button } from "@/components/ui/button";
-import { ColorPaletteGenerator } from "@/lib/color";
+import { ColorPaletteGenerator } from "@/utils/color";
 
 export default function ClusterPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);

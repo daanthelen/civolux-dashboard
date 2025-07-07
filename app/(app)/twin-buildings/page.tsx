@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Building, Location, MapMarker } from "@/types/map";
+import { escapeCsvValue } from "@/utils/csvUtils";
 
 export default function TwinBuildingPage() {
   const [street, setStreet] = useState<string>('');
@@ -94,6 +95,33 @@ export default function TwinBuildingPage() {
     });
   }
 
+  const exportToCsv = async () => {
+    if (!referenceBuilding) return;
+
+    const headers = Object.keys(referenceBuilding) as (keyof Building)[];
+    const headerRow = ['twin_type', ...headers].join(',');
+
+    const referenceBuildingString = [escapeCsvValue("\"reference_building\""), ...headers.map(header => escapeCsvValue(referenceBuilding[header]))].join(',');
+    const twinBuildingsString = twinBuildings.map(twinBuilding => {
+      return [escapeCsvValue("\"twin_building\""), ...headers.map(header => escapeCsvValue(twinBuilding[header]))].join(',');
+    });
+
+    const csvString = [headerRow, referenceBuildingString, ...twinBuildingsString].join('\n');
+
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `twin_buildings_${new Date().toISOString().split('T')[0]}.csv`)
+    link.style.visibility = 'hidden';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div>
       <Label htmlFor="street">Street:</Label>
@@ -105,7 +133,9 @@ export default function TwinBuildingPage() {
       <Label htmlFor="houseNumberAddition">House Number Addition:</Label>
       <Input id="houseNumberAddition" type='text' value={houseNumberAddition} onChange={e => setHouseNumberAddition(e.target.value)} />
 
-      <Button type='submit' onClick={findTwinBuildings} className="border-2 border-black border-solid" >Predict</Button>
+      <Button type='submit' onClick={findTwinBuildings} className="border-2 border-black border-solid">Predict</Button>
+
+      <Button onClick={exportToCsv} className="border-2 border-black border-solid">Export</Button>
 
       <div className="h-[600px] w-[1000px]">
         <MapComponent
