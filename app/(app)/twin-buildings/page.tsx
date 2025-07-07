@@ -5,14 +5,14 @@ import MapComponent from "@/components/map";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { TwinBuilding, Location, MapMarker } from "@/types/map";
+import { Building, Location, MapMarker } from "@/types/map";
 
 export default function TwinBuildingPage() {
   const [street, setStreet] = useState<string>('');
   const [houseNumber, setHouseNumber] = useState<number | null>(null);
   const [houseNumberAddition, setHouseNumberAddition] = useState<string>('');
-  const [referenceBuilding, setReferenceBuilding] = useState<TwinBuilding | null>(null);
-  const [twinBuildings, setTwinBuildings] = useState<TwinBuilding[]>([])
+  const [referenceBuilding, setReferenceBuilding] = useState<Building | null>(null);
+  const [twinBuildings, setTwinBuildings] = useState<Building[]>([])
   const [markers, setMarkers] = useState<MapMarker[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentLocation, setCurrentLocation] = useState<Location | undefined>(undefined);

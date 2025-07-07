@@ -1,4 +1,4 @@
-export interface TwinBuilding {
+export interface Building {
   id: string;
   longitude: number;
   latitude: number;
@@ -6,6 +6,11 @@ export interface TwinBuilding {
   build_year: number;
   area: number;
   building_type: string;
+}
+
+export interface Cluster {
+  id: number;
+  buildings: Building[];
 }
 
 export interface Location {

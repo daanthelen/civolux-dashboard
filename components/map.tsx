@@ -30,9 +30,7 @@ export default function MapComponent({ location, zoom, markers = [], onMarkerCli
           setCurrentLatitude(position.coords.latitude);
           setCurrentZoom(defaultZoom);
         },
-        (error) => {
-          console.warn("Geolocation error:", error)
-
+        () => {
           setCurrentLongitude(defaultLongitude);
           setCurrentLatitude(defaultLatitude);
           setCurrentZoom(defaultZoom);
