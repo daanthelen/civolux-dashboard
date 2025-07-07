@@ -11,6 +11,7 @@ export interface Building {
 export interface Cluster {
   id: number;
   buildings: Building[];
+  color?: string;
 }
 
 export interface Location {
@@ -32,5 +33,6 @@ export interface MapProps {
   location?: Location;
   zoom?: number;
   markers?: MapMarker[];
+  clusters?: Cluster[];
   onMarkerClick?: (marker: MapMarker) => void;
 }
