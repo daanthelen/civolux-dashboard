@@ -14,8 +14,9 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Separator } from "./ui/separator"
-import { Calendar, LayoutDashboard, Settings, UserRound, SquareStack, Group } from "lucide-react"
+import { LayoutDashboard, UserRound, SquareStack, Group } from "lucide-react"
 import { SignOutButton } from "./sign-out-button";
+import { PiBulldozerBold } from "react-icons/pi";
 
 const menuItems = [
   {
@@ -24,9 +25,9 @@ const menuItems = [
     icon: LayoutDashboard,
   },
   {
-    title: 'Sloopkalender',
-    url: '/calendar',
-    icon: Calendar,
+    title: 'Sloopprojecten',
+    url: '/demolitions',
+    icon: PiBulldozerBold,
   },
   {
     title: 'Twin Buildings',
@@ -37,11 +38,6 @@ const menuItems = [
     title: 'Clusters',
     url: '/clusters',
     icon: Group,
-  },
-  {
-    title: 'Instellingen',
-    url: '/settings',
-    icon: Settings,
   },
 ]
 

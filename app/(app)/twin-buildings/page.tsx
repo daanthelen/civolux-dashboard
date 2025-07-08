@@ -130,6 +130,7 @@ export default function TwinBuildingPage() {
   return (
     <div className="flex h-full gap-4">
       <div className="w-fit shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
+        <h1 className="m-6 text-2xl font-bold">Twinbuildings</h1>
         <Card className="m-4">
           <CardHeader>
             <CardTitle className="text-lg">Adres Zoeken</CardTitle>

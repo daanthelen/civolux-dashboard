@@ -31,7 +31,7 @@ export function LoginForm() {
         router.refresh();
       }
     }
-    catch (err) {
+    catch {
       setError('Something went wrong, please try again later.');
     }
     finally {

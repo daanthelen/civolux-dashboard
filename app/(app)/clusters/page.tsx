@@ -44,12 +44,13 @@ export default function ClusterPage() {
   return (
     <div className="flex h-full gap-4">
       <div className="w-96 shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
+        <h1 className="m-6 text-2xl font-bold">Clusters</h1>
         <Button
           onClick={getClusters}
           disabled={isLoading}
           className="w-auto m-4 cursor-pointer"
         >
-            Toon Clusters
+          Haal clusters op
         </Button>
         <Card className="m-4 flex-1 flex flex-col">
           <CardHeader>
