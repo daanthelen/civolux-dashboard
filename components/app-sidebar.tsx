@@ -7,6 +7,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -46,11 +47,19 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="none" className="flex flex-col w-64 text-indigo-200 h-screen">
+      <SidebarHeader className="bg-[#41228E]">
+        <SidebarMenu>
+          <SidebarMenuItem className="p-2">
+            <SidebarMenuButton asChild className="w-fit pt-5 pb-5 pl-3 pr-3 bg-transparent hover:bg-transparent">
+              <Link href='/'>
+                <span className="text-white text-2xl font-bold">Civolux</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent className="bg-[#41228E]">
         <SidebarGroup>
-          <SidebarGroupLabel className="flex h-16 shrink-0 items-center px-6 border-b border-indigo-500">
-            <span className="text-white text-2xl font-bold">Civolux</span>
-          </SidebarGroupLabel>
           <Separator />
           <SidebarGroupContent className="flex flex-1 flex-col px-6 py-4">
             <SidebarMenu className="flex flex-col gap-y-4">
