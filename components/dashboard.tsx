@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Material } from "@/types/map";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Skeleton } from "./ui/skeleton";
 import PieChart, { PieChartProps } from '@/components/pie-chart';
 import BarChart, { BarChartProps } from '@/components/bar-chart';
 
@@ -22,9 +23,12 @@ export default function DashboardComponent() {
   const [materials, setMaterials] = useState<TotalMaterial[]>([]);
   const [pieChartData, setPieChartData] = useState<PieChartProps | null>(null);
   const [barChartData, setBarChartData] = useState<BarChartProps | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getMaterials = async () => {
+      setIsLoading(true);
+
       try {
         const response = await fetch('/api/analysis/materials');
 
@@ -36,6 +40,9 @@ export default function DashboardComponent() {
       }
       catch (error) {
         console.error(error);
+      }
+      finally {
+        setIsLoading(false);
       }
     }
 
@@ -91,54 +98,65 @@ export default function DashboardComponent() {
 
   return (
     <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-      <Card className='lg:col-span-2 h-fit bg-white rounded-lg shadow overflow-auto'>
-        <CardHeader>
-          <CardTitle className='text-indigo-700 font-bold text-lg'>Overzicht Materialen</CardTitle>
-        </CardHeader>
+      <Card className='lg:col-span-2 h-fit w-200 bg-white rounded-lg shadow overflow-auto'>
         <CardContent>
-          <Table className='min-w-full table-auto border-collapse border border-gray-200'>
-            <TableHeader className='bg-indigo-100'>
-              <TableRow>
-                <TableHead className='border border-gray-300 px-4 py-2 font-bold text-left text-indigo-700'>Materiaal</TableHead>
-                <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Hoeveelheid (m³)</TableHead>
-                <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Aantal Gebouwen</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {materials.map(material => (
-                <TableRow key={material.name} className='hover:bg-indigo-50 even:bg-indigo-50'>
-                  <TableCell className='border border-gray-300 px-4 py-2'>{material.name}</TableCell>
-                  <TableCell className='border border-gray-300 px-4 py-2 text-right'>{material.quantity.toLocaleString()}</TableCell>
-                  <TableCell className='border border-gray-300 px-4 py-2 text-right font-semibold'>{material.buildings}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-
-          {barChartData && (
-            <div className="mt-10">
-              <h3 className="font-semibold text-indigo-600 mb-3">Gemiddelden per Materiaal</h3>
-              <div className='h-[250px]'>
-                <BarChart data={barChartData.data} options={barChartData.options} />
-              </div>
+          <div>
+            <h2 className="font-semibold text-xl text-indigo-600 mb-3">Materiaaltabel</h2>
+            <div className="min-h-96">
+              {isLoading ? (
+                <Skeleton className="h-96 w-full animate-pulse bg-gray-300 dark:bg-gray-500" />
+              ) : (
+                <Table className='min-w-full table-auto border-collapse border border-gray-200'>
+                  <TableHeader className='bg-indigo-100'>
+                    <TableRow>
+                      <TableHead className='border border-gray-300 px-4 py-2 font-bold text-left text-indigo-700'>Materiaal</TableHead>
+                      <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Hoeveelheid (m³)</TableHead>
+                      <TableHead className='border border-gray-300 px-4 py-2 font-bold text-right text-indigo-700'>Aantal Gebouwen</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {materials.map(material => (
+                      <TableRow key={material.name} className='hover:bg-indigo-50 even:bg-indigo-50'>
+                        <TableCell className='border border-gray-300 px-4 py-2'>{material.name}</TableCell>
+                        <TableCell className='border border-gray-300 px-4 py-2 text-right'>{material.quantity.toLocaleString()}</TableCell>
+                        <TableCell className='border border-gray-300 px-4 py-2 text-right font-semibold'>{material.buildings}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </div>
-          )}
+          </div>
+
+          <div className="mt-15">
+            <h2 className="font-semibold text-xl text-indigo-600 mb-3">Gemiddelden per Materiaal</h2>
+            <div className='min-h-96'>
+              {isLoading ? (
+                <Skeleton className="h-96 w-full animate-pulse bg-gray-300 dark:bg-gray-500" />
+              ) : (
+                barChartData && (
+                  <BarChart data={barChartData.data} options={barChartData.options} />
+                )
+              )}
+            </div>
+          </div>
         </CardContent>
       </Card>
 
-      <Card className='bg-white rounded-lg h-fit shadow'>
-        <CardHeader>
-          <CardTitle className='text-indigo-700 font-bold text-lg'>Visuele Overzichten</CardTitle>
-        </CardHeader>
+      <Card className='w-96 bg-white rounded-lg h-fit shadow'>
         <CardContent>
-          {pieChartData && (
-            <div className='mb-10'>
-              <h3 className='font-semibold text-indigo-600 mb-3'>Materiaalverdeling (m³)</h3>
-              <div className='h-[300px]'>
-                <PieChart data={pieChartData.data} />
-              </div>
+          <div>
+            <h2 className="font-semibold text-xl text-indigo-600 mb-3">Materiaalverdeling (m³)</h2>
+            <div className="h-96">
+              {isLoading ? (
+                <Skeleton className="h-96 w-full animate-pulse bg-gray-300 dark:bg-gray-500" />
+              ) : (
+                pieChartData && (
+                  <PieChart data={pieChartData.data} />
+                )
+              )}
             </div>
-          )}
+          </div>
         </CardContent>
       </Card>
     </div>
