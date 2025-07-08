@@ -6,7 +6,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -80,11 +79,11 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter className="bg-[#41228E] px-[32] py-4">
         <SidebarMenuItem key='footer' className="group flex items-center rounded-md text-sm font-semibold">
-          <SidebarMenuButton asChild className="w-full h-full p-3 justify-start flex-1 hover:bg-indigo-700 hover:text-white">
-            <Link href='/profile'>
+          <SidebarMenuButton asChild className="w-full h-full p-3 justify-start flex-1 hover:bg-indigo-700 hover:cursor-pointer hover:text-white">
+            <div>
               <UserRound />
               <span>Profiel</span>
-            </Link>
+            </div>
           </SidebarMenuButton>
           <Separator orientation="vertical" className="bg-white/50 mx-2" />
           <SignOutButton />
