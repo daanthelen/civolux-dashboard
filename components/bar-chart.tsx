@@ -5,7 +5,7 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-interface BarChartProps {
+export interface BarChartProps {
   data: ChartData<'bar'>;
   options?: ChartOptions<'bar'>;
 }

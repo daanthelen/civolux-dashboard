@@ -232,9 +232,30 @@ export default function MapComponent({ location, zoom, markers = [], clusters = 
     });
   }
 
+  function calculateMarkerBounds(markers: MapMarker[]) {
+    if (!markers || markers.length === 0) return;
+
+    const bounds = new LngLatBounds();
+
+    markers.forEach(marker => {
+      bounds.extend([marker.longitude, marker.latitude]);
+    });
+
+    map.current!.fitBounds(bounds, {
+      padding: 50,
+      duration: 2000,
+      maxZoom: 16,
+      minZoom: 12,
+    });
+  }
+
   useEffect(() => {
     if (mapInitialized) {
       addMarkersToMap();
+
+      if (!location) {
+        calculateMarkerBounds(markers);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markers, mapInitialized]);

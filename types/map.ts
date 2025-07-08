@@ -8,6 +8,21 @@ export interface Building {
   building_type: string;
 }
 
+export interface Demolition extends Building {
+  age: number;
+  relative_age: number;
+  predicted_lifespan: number;
+  area_ratio: number;
+  prediction: boolean;
+  demolition_probability: number;
+  materials?: Material[];
+}
+
+export interface Material {
+  name: string;
+  quantity: number;
+}
+
 export interface Address {
   street: string;
   house_number: number;
@@ -34,6 +49,7 @@ export interface MapMarker {
   address?: string;
   buildYear?: number;
   area?: number;
+  materials?: Material[]
 }
 
 export interface MapProps {
