@@ -59,3 +59,20 @@ export interface MapProps {
   clusters?: Cluster[];
   onMarkerClick?: (marker: MapMarker) => void;
 }
+
+export interface GeoJsonPointFeature {
+  type: 'Feature';
+  geometry: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
+  properties: {
+    twin_type: string;
+    building_props: Omit<Building, 'longitude' | 'latitude'>;
+  }
+}
+
+export interface GeoJsonFeatureCollection {
+  type: 'FeatureCollection';
+  features: GeoJsonPointFeature[];
+}

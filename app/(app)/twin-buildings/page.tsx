@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import MapComponent from "@/components/map";
 import { Button } from "@/components/ui/button";
-import { Building, Location, MapMarker, Address } from "@/types/map";
-import { escapeCsvValue } from "@/utils/csvUtils";
+import { Building, Location, MapMarker, Address, GeoJsonFeatureCollection } from "@/types/map";
+import { convertToGeoJsonPointFeature, escapeCsvValue } from "@/utils/exportUtils";
 import { AddressInput } from "@/components/address-input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download } from "lucide-react";
@@ -112,13 +112,45 @@ export default function TwinBuildingPage() {
     });
 
     const csvString = [headerRow, referenceBuildingString, ...twinBuildingsString].join('\n');
+    downloadExport(csvString, 'csv');
 
-    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    // const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    // const url = URL.createObjectURL(blob);
+
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.setAttribute('download', `twin_buildings_${new Date().toISOString().split('T')[0]}.csv`)
+    // link.style.visibility = 'hidden';
+
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
+    // URL.revokeObjectURL(url);
+  }
+
+  const exportToGeoJson = async () => {
+    if (!referenceBuilding) return;
+
+    const referenceBuildingFeatures = convertToGeoJsonPointFeature([referenceBuilding], 'reference_building');
+    const twinBuildingsFeatures = convertToGeoJsonPointFeature(twinBuildings, 'twin_building');
+    const geoJsonCollection: GeoJsonFeatureCollection = {
+      type: 'FeatureCollection',
+      features: [...referenceBuildingFeatures.features, ...twinBuildingsFeatures.features]
+    };
+
+    const jsonString = JSON.stringify(geoJsonCollection, null, 2);
+    downloadExport(jsonString, 'geojson');
+  }
+
+  const downloadExport = async (content: string, fileType: 'csv' | 'geojson') => {
+    const mimeType = fileType == 'csv' ? 'text/csv' : 'application/geo+json';
+
+    const blob = new Blob([content], { type: `${mimeType};charset=utf-8;` });
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `twin_buildings_${new Date().toISOString().split('T')[0]}.csv`)
+    link.setAttribute('download', `twin_buildings_${new Date().toISOString().split('T')[0]}.${fileType}`)
     link.style.visibility = 'hidden';
 
     document.body.appendChild(link);
@@ -157,6 +189,15 @@ export default function TwinBuildingPage() {
             >
               <Download className="h-4 w-4 mr-2" />
               Export Naar CSV
+            </Button>
+            <Button
+              onClick={exportToGeoJson}
+              disabled={twinBuildings?.length === 0}
+              className="w-full mt-4 bg-transparent cursor-pointer"
+              variant="outline"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export Naar GeoJSON
             </Button>
           </CardContent>
         </Card>
