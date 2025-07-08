@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { db } from '@/lib/db';
-import TableActions from '@/components/table-actions';
+import TableActions from '@/components/users/table-actions';
 
 async function UsersTable() {
   const users = await db.getUsers();

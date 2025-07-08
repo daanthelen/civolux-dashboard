@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import MapComponent from "@/components/map";
+import MapComponent from "@/components/map/map";
 import { Cluster } from "@/types/map";
 import { Button } from "@/components/ui/button";
 import { ColorPaletteGenerator } from "@/utils/color";

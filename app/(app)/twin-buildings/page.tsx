@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import MapComponent from "@/components/map";
+import MapComponent from "@/components/map/map";
 import { Button } from "@/components/ui/button";
 import { Building, Location, MapMarker, Address, GeoJsonFeatureCollection } from "@/types/map";
 import { convertToGeoJsonPointFeature, escapeCsvValue } from "@/utils/exportUtils";
-import { AddressInput } from "@/components/address-input";
+import { AddressInput } from "@/components/twin-buildings/address-input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download } from "lucide-react";
-import { TwinBuildingList } from "@/components/twin-building-list";
+import { TwinBuildingList } from "@/components/twin-buildings/twin-building-list";
 
 export default function TwinBuildingPage() {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);

@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
-import { LoginForm } from '@/components/login-form';
+import { LoginForm } from '@/components/users/login-form';
 
 export default async function LoginPage() {
   const supabase = await createClient();

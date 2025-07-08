@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import MapComponent from "@/components/map";
+import MapComponent from "@/components/map/map";
 import { useEffect, useState } from 'react';
 import { Demolition, MapMarker } from '@/types/map';
 import { Button } from '@/components/ui/button';

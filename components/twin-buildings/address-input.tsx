@@ -2,10 +2,10 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import type { Address } from '@/types/map';
 import { cn } from '@/lib/utils';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import {
   Command,
   CommandEmpty,
@@ -13,7 +13,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from './ui/command';
+} from '../ui/command';
 
 interface AddressInputProps {
   onSelect: (adddress: Address) => void;

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Pencil, Trash2 } from 'lucide-react';
 
 interface TableActionsProps {

@@ -16,7 +16,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Separator } from "./ui/separator"
 import { LayoutDashboard, UserRound, SquareStack, Group } from "lucide-react"
-import { SignOutButton } from "./sign-out-button";
+import { SignOutButton } from "./users/sign-out-button";
 import { PiBulldozerBold } from "react-icons/pi";
 
 const menuItems = [

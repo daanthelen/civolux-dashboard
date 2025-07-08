@@ -11,9 +11,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Skeleton } from "./ui/skeleton";
-import PieChart, { PieChartProps } from '@/components/pie-chart';
-import BarChart, { BarChartProps } from '@/components/bar-chart';
+import { Skeleton } from "../ui/skeleton";
+import PieChart, { PieChartProps } from "./pie-chart";
+import BarChart, { BarChartProps } from "./bar-chart";
 
 interface TotalMaterial extends Material {
   buildings: number;

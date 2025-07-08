@@ -1,8 +1,7 @@
 import { MapMarker } from "@/types/map";
 import { useEffect, useState } from "react";
 import { BsHouseFill } from 'react-icons/bs';
-import BarChart from "./bar-chart";
-import { BarChartProps } from "./bar-chart";
+import BarChart, { BarChartProps } from "../dashboard/bar-chart";
 
 interface MarkerProps {
   marker: MapMarker;
@@ -46,7 +45,6 @@ export default function MarkerComponent({ marker, onMarkerClick }: MarkerProps) 
 
   return (
     <div
-      // className='relative' // A container to position the tooltip relative to
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
       onClick={handleMarkerClick}
