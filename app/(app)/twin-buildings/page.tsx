@@ -9,6 +9,7 @@ import { AddressInput } from "@/components/twin-buildings/address-input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download } from "lucide-react";
 import { TwinBuildingList } from "@/components/twin-buildings/twin-building-list";
+import { calculateEuclideanDistance } from "@/utils/distance";
 
 export default function TwinBuildingPage() {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
@@ -37,8 +38,17 @@ export default function TwinBuildingPage() {
       });
 
       const buildings = await response.json();
-      setTwinBuildings(buildings.twin_buildings);
       setReferenceBuilding(buildings.reference_building);
+      
+      // Sorteer op afstand - oplopend
+      buildings.twin_buildings.sort((a: Building, b: Building) => {
+        const referenceLocation = { longitude: buildings.reference_building.longitude, latitude: buildings.reference_building.latitude};
+        const distA = calculateEuclideanDistance(referenceLocation, { longitude: a.longitude, latitude: a.latitude });
+        const distB = calculateEuclideanDistance(referenceLocation, { longitude: b.longitude, latitude: b.latitude });
+        return distA - distB;
+      });
+      
+      setTwinBuildings(buildings.twin_buildings);
     }
     catch (error) {
       console.error(error);
@@ -89,14 +99,17 @@ export default function TwinBuildingPage() {
     });
   }, [referenceBuilding, twinBuildings]);
 
-  useEffect(() => {
-    console.log(twinBuildings);
-  }, [twinBuildings]);
-
   const handleMarkerClick = (marker: MapMarker) => {
     setCurrentLocation({
       longitude: marker.longitude,
       latitude: marker.latitude,
+    });
+  }
+
+  const handleTwinBuildingClick = (twinBuilding: Building) => {
+    setCurrentLocation({
+      longitude: twinBuilding.longitude,
+      latitude: twinBuilding.latitude,
     });
   }
 
@@ -113,19 +126,6 @@ export default function TwinBuildingPage() {
 
     const csvString = [headerRow, referenceBuildingString, ...twinBuildingsString].join('\n');
     downloadExport(csvString, 'csv');
-
-    // const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    // const url = URL.createObjectURL(blob);
-
-    // const link = document.createElement('a');
-    // link.href = url;
-    // link.setAttribute('download', `twin_buildings_${new Date().toISOString().split('T')[0]}.csv`)
-    // link.style.visibility = 'hidden';
-
-    // document.body.appendChild(link);
-    // link.click();
-    // document.body.removeChild(link);
-    // URL.revokeObjectURL(url);
   }
 
   const exportToGeoJson = async () => {
@@ -161,7 +161,7 @@ export default function TwinBuildingPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="w-fit shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
+      <div className="w-96 shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
         <h1 className="m-6 text-2xl font-bold">Twinbuildings</h1>
         <Card className="m-4">
           <CardHeader>
@@ -173,13 +173,16 @@ export default function TwinBuildingPage() {
           </CardContent>
         </Card>
 
-        <Card className="m-4 flex-1 flex flex-col">
+        <Card className="m-4 flex-1 flex flex-col overflow-auto">
           <CardHeader>
             <CardTitle className="text-lg">Gevonden Twin Buildings ({twinBuildings?.length || 0})</CardTitle>
           </CardHeader>
           <CardContent className="flex-1 flex flex-col">
             <div className="flex-1">
-              <TwinBuildingList twinBuildings={twinBuildings} />
+              <TwinBuildingList
+                twinBuildings={twinBuildings}
+                onTwinBuildingClick={handleTwinBuildingClick}
+              />
             </div>
             <Button
               onClick={exportToCsv}
