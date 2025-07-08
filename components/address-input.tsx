@@ -48,7 +48,7 @@ export function AddressInput({ onSelect }: AddressInputProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          searchQuery: query,
+          address: query,
         }),
       });
 

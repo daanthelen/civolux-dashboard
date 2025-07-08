@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        searchQuery: body.searchQuery,
+        address: body.address,
       }),
     });
     
