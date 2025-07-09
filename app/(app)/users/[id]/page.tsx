@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import UserForm from '@/components/user-form';
+import UserForm from '@/components/users/user-form';
 import { db } from '@/lib/db';
 
 export default async function EditUserPage({ params }: { params: Promise<{ id: string }> }) {
