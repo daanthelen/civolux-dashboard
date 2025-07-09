@@ -97,16 +97,16 @@ export default function DashboardComponent() {
   }, [materials]);
 
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-      <Card className='lg:col-span-2 h-fit w-200 bg-white rounded-lg shadow overflow-auto'>
+    <div className='flex gap-4 h-full max-w-full'>
+      <Card className='flex h-fit max-h-full w-150 2xl:w-200 bg-white rounded-lg shadow overflow-auto'>
         <CardContent>
           <div>
             <h2 className="font-semibold text-xl text-indigo-600 mb-3">Materiaaltabel</h2>
-            <div className="min-h-96">
+            <div className="min-h-60 2xl:min-h-96">
               {isLoading ? (
-                <Skeleton className="h-96 w-full animate-pulse bg-gray-300 dark:bg-gray-500" />
+                <Skeleton className="h-60 2xl:h-96 w-full animate-pulse bg-gray-300 dark:bg-gray-500" />
               ) : (
-                <Table className='min-w-full table-auto border-collapse border border-gray-200'>
+                <Table className='w-full table-auto border-collapse border border-gray-200'>
                   <TableHeader className='bg-indigo-100'>
                     <TableRow>
                       <TableHead className='border border-gray-300 px-4 py-2 font-bold text-left text-indigo-700'>Materiaal</TableHead>
@@ -130,9 +130,9 @@ export default function DashboardComponent() {
 
           <div className="mt-15">
             <h2 className="font-semibold text-xl text-indigo-600 mb-3">Gemiddelden per Materiaal</h2>
-            <div className='min-h-96'>
+            <div className='min-h-60 2xl:min-h-96'>
               {isLoading ? (
-                <Skeleton className="h-96 w-full animate-pulse bg-gray-300 dark:bg-gray-500" />
+                <Skeleton className="h-60 2xl:h-96 w-full animate-pulse bg-gray-300 dark:bg-gray-500" />
               ) : (
                 barChartData && (
                   <BarChart data={barChartData.data} options={barChartData.options} />
@@ -143,7 +143,7 @@ export default function DashboardComponent() {
         </CardContent>
       </Card>
 
-      <Card className='w-96 bg-white rounded-lg h-fit shadow'>
+      <Card className='flex h-fit max-h-full w-85 2xl:w-96 bg-white rounded-lg shadow overflow-auto'>
         <CardContent>
           <div>
             <h2 className="font-semibold text-xl text-indigo-600 mb-3">Materiaalverdeling (m³)</h2>
