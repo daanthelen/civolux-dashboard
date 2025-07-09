@@ -11,10 +11,10 @@ interface TwinBuildingListProps {
 
 export function TwinBuildingList({ twinBuildings = [], onTwinBuildingClick }: TwinBuildingListProps) {
   return (
-    <ScrollArea className="h-full max-h-200 w-full border rounded-md shadow-sm">
+    <ScrollArea className="h-full w-full border rounded-md shadow-sm">
       <div className="space-y-1">
         {!twinBuildings || twinBuildings.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Geen Twin Buildings gevonden</p>
+          <p className="text-xs 2xl:text-sm text-muted-foreground text-center py-8">Geen Twin Buildings gevonden</p>
         ) : (
           twinBuildings?.map(twinBuilding => (
             <TwinBuildingListItem

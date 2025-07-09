@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Building, Location, MapMarker, Address, GeoJsonFeatureCollection } from "@/types/map";
 import { convertToGeoJsonPointFeature, escapeCsvValue } from "@/utils/exportUtils";
 import { AddressInput } from "@/components/twin-buildings/address-input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Download } from "lucide-react";
 import { TwinBuildingList } from "@/components/twin-buildings/twin-building-list";
 import { calculateEuclideanDistance } from "@/utils/distance";
@@ -160,34 +160,34 @@ export default function TwinBuildingPage() {
   }
 
   return (
-    <div className="flex h-full gap-4">
-      <div className="w-96 shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
-        <h1 className="m-6 text-2xl font-bold">Twinbuildings</h1>
+    <div className="flex gap-4 h-full max-w-full">
+      <div className="w-96 max-h-screen shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
+        <h1 className="ml-6 mt-6 mb-2 text-xl 2xl:text-2xl font-bold">Twinbuildings</h1>
         <Card className="m-4">
           <CardHeader>
-            <CardTitle className="text-lg">Adres Zoeken</CardTitle>
+            <CardTitle className="text-base 2xl:text-lg">Adres Zoeken</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <AddressInput onSelect={setSelectedAddress} />
-            <Button onClick={findTwinBuildings} disabled={!selectedAddress} className="w-full cursor-pointer">Selecteer Adres</Button>
+            <Button onClick={findTwinBuildings} disabled={!selectedAddress} className="w-full cursor-pointer text-xs 2xl:text-sm">Selecteer Adres</Button>
           </CardContent>
         </Card>
 
         <Card className="m-4 flex-1 flex flex-col overflow-auto">
           <CardHeader>
-            <CardTitle className="text-lg">Gevonden Twin Buildings ({twinBuildings?.length || 0})</CardTitle>
+            <CardTitle className="text-base 2xl:text-lg">Gevonden Twin Buildings ({twinBuildings?.length || 0})</CardTitle>
           </CardHeader>
-          <CardContent className="flex-1 flex flex-col">
-            <div className="flex-1">
-              <TwinBuildingList
-                twinBuildings={twinBuildings}
-                onTwinBuildingClick={handleTwinBuildingClick}
-              />
-            </div>
+          <CardContent className="flex-1 min-h-20">
+            <TwinBuildingList
+              twinBuildings={twinBuildings}
+              onTwinBuildingClick={handleTwinBuildingClick}
+            />
+          </CardContent>
+          <CardFooter className="flex flex-col">
             <Button
               onClick={exportToCsv}
               disabled={twinBuildings?.length === 0}
-              className="w-full mt-4 bg-transparent cursor-pointer"
+              className="w-full mt-4 bg-transparent cursor-pointer text-xs 2xl:text-sm"
               variant="outline"
             >
               <Download className="h-4 w-4 mr-2" />
@@ -196,17 +196,17 @@ export default function TwinBuildingPage() {
             <Button
               onClick={exportToGeoJson}
               disabled={twinBuildings?.length === 0}
-              className="w-full mt-4 bg-transparent cursor-pointer"
+              className="w-full mt-4 bg-transparent cursor-pointer text-xs 2xl:text-sm"
               variant="outline"
             >
               <Download className="h-4 w-4 mr-2" />
               Export Naar GeoJSON
             </Button>
-          </CardContent>
+          </CardFooter>
         </Card>
       </div>
 
-      <Card className="h-full w-6xl shrink-1">
+      <Card className="h-full w-4xl 2xl:w-6xl">
         <CardContent className="h-full">
           <MapComponent
             location={currentLocation}

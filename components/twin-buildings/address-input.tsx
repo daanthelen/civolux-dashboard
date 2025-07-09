@@ -87,7 +87,7 @@ export function AddressInput({ onSelect }: AddressInputProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between bg-transparent"
+          className="w-full justify-between bg-transparent text-xs 2xl:text-sm"
         >
           {value || 'Search address...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -99,21 +99,22 @@ export function AddressInput({ onSelect }: AddressInputProps) {
             placeholder="Type at least 2 characters to search..."
             value={searchQuery}
             onValueChange={setSearchQuery}
+            className='text-xs 2xl:text-sm'
           />
           <CommandList className="max-h-64">
             {isLoading && addresses.length === 0 && (
               <div className="flex items-center justify-center py-6">
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                <span className="text-sm text-muted-foreground">Searching addresses...</span>
+                <span className="text-xs 2xl:text-sm text-muted-foreground">Searching addresses...</span>
               </div>
             )}
 
             {!isLoading && searchQuery.length > 0 && searchQuery.length < 2 && (
-              <CommandEmpty>Type at least 2 characters to search</CommandEmpty>
+              <CommandEmpty className='text-xs 2xl:text-sm p-2 text-muted-foreground'>Type at least 2 characters to search</CommandEmpty>
             )}
 
             {!isLoading && searchQuery.length >= 2 && addresses.length === 0 && (
-              <CommandEmpty>No addresses found for &quot;{searchQuery}&quot;</CommandEmpty>
+              <CommandEmpty className='text-xs 2xl:text-sm p-2 text-muted-foreground'>No addresses found for &quot;{searchQuery}&quot;</CommandEmpty>
             )}
 
             {addresses.length > 0 && (
@@ -134,7 +135,7 @@ export function AddressInput({ onSelect }: AddressInputProps) {
                     >
                       <Check className={cn("mr-2 h-4 w-4", value === addressString ? "opacity-100" : "opacity-0")} />
                       <div className="flex flex-col">
-                        <span className="font-medium">{addressString}</span>
+                        <span className="text-xs 2xl:text-sm">{addressString}</span>
                       </div>
                     </CommandItem>
                   )

@@ -56,19 +56,19 @@ export default function DemolitionPage() {
   }, [demolitions]);
 
   return (
-    <div className="flex h-full gap-4">
-      <div className="w-96 shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
-        <h1 className="m-6 text-2xl font-bold">Sloopprojecten</h1>
+    <div className="flex gap-4 h-full max-w-full">
+      <div className="w-120 2xl:w-96 max-h-screen shrink-1 bg-white border-r rounded-xl border-gray-200 flex flex-col">
+        <h1 className="ml-6 mt-6 mb-2 text-xl 2xl:text-2xl font-bold">Sloopprojecten</h1>
         <Button
           onClick={getDemolitions}
           disabled={isLoading}
-          className="w-auto m-4 cursor-pointer"
+          className="w-auto m-4 cursor-pointer text-xs 2xl:text-sm"
         >
           Haal sloopprojecten op
         </Button>
         <Card className="m-4 flex-1 flex flex-col overflow-auto">
           <CardHeader>
-            <CardTitle className="text-lg">Sloopprojecten ({demolitions?.length || 0})</CardTitle>
+            <CardTitle className="text-base 2xl:text-lg">Sloopprojecten ({demolitions?.length || 0})</CardTitle>
           </CardHeader>
           <CardContent className="flex-1 flex flex-col">
             <div className="flex-1">
